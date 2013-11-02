@@ -31,13 +31,13 @@ namespace RadaCode.Tegenaria.Core
             urls.Add(preparaUrl(baseUri.AbsoluteUri));
 
 
-            cambios(getHTML(url), baseUri, urls, 0);
-            //var baseUrls = cambios(getHTML(baseUri), baseUri, urls, 0);
-            //foreach (var url1 in urls)
-            //{
-            //    //if (baseUri.Equals(new Uri(url1))) continue;
-            //    cambios(getHTML(new Uri(url1)), new Uri(url1), urls, 0);
-            //}
+            //cambios(getHTML(url), baseUri, urls, 0);
+            var baseUrls = cambios(getHTML(baseUri), baseUri, urls, 0).ToList();
+            for (int i = 0; i < baseUrls.Count(); i++ )
+            {
+                if (baseUri.Equals(new Uri(baseUrls[i]))) continue;
+                cambios(getHTML(new Uri(baseUrls[i])), new Uri(baseUrls[i]), urls, 0);
+            }
 
             return urls;
         }
