@@ -42,7 +42,7 @@ namespace RadaCode.Tegenaria.Core
             return urls;
         }
 
-        private static ISet<string> cambios(string texto, Uri baseUri, ISet<string> urls, int deepLevel)
+        private ISet<string> cambios(string texto, Uri baseUri, ISet<string> urls, int deepLevel)
         {
             string pattern_hRef = @"(?<=<a[^<>]+href=""?)[^""<>]+(?=""?[^<>]*>)";
 
@@ -57,7 +57,7 @@ namespace RadaCode.Tegenaria.Core
                     href = new Uri(match.Value);
                 else if (Uri.IsWellFormedUriString(match.Value, UriKind.Relative))
                 {
-                    href = new Uri(makeRelative(baseUri.AbsoluteUri, match.Value));
+                    href = new Uri(MakeRelative(baseUri.AbsoluteUri, match.Value));
 
                 }
                 else continue;
@@ -84,7 +84,7 @@ namespace RadaCode.Tegenaria.Core
             return urls;
         }
 
-        private static string preparaUrl(string url)
+        private string preparaUrl(string url)
         {
             string _aux = url;
             _aux = _aux.EndsWith("/") ? _aux.Substring(0, _aux.Length - 1) : _aux;
@@ -94,29 +94,32 @@ namespace RadaCode.Tegenaria.Core
             return _aux;
         }
 
-        private static string getHTML(Uri url)
+        private string getHTML(Uri url)
         {
             string retorno = string.Empty;
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            
+            var request = (HttpWebRequest) WebRequest.Create(url);
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse) request.GetResponse())
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        StreamReader sr = new StreamReader(response.GetResponseStream());
+                        var sr = new StreamReader(response.GetResponseStream());
                         retorno = sr.ReadToEnd();
                     }
                 }
             }
             catch
-            { retorno = string.Empty; }
+            {
+                retorno = string.Empty;
+            } 
 
             return retorno;
+
         }
 
-        internal static string makeRelative(string baseUrl, string relativeUrl)
+        internal string MakeRelative(string baseUrl, string relativeUrl)
         {
             baseUrl = baseUrl.Trim(new char[] { '/' });
             relativeUrl = relativeUrl.Trim(new char[] { '/' });

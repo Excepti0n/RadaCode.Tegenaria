@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadaCode.Tegenaria", "RadaCode.Tegenaria\RadaCode.Tegenaria.csproj", "{38BD6A8C-FF32-47E4-A5A2-52F3512E29F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5719AFF9-B2CD-436A-9391-902D3FB420E3} = {5719AFF9-B2CD-436A-9391-902D3FB420E3}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadaCode.Tegenaria.Core", "RadaCode.Tegenaria.Core\RadaCode.Tegenaria.Core.csproj", "{5719AFF9-B2CD-436A-9391-902D3FB420E3}"
 EndProject

@@ -11,8 +11,12 @@ namespace RadaCode.Tegenaria.Core
 {
     public class XmlGenerator : IXmlGenerator
     {
+        public int IndexedPagesCount { get; set; }
+
         public void GetSiteMapXml(Uri uri, string path, ISet<string> urls)
         {
+            IndexedPagesCount = urls.Count;
+
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
             //foreach (var url in items)
             //{
@@ -33,7 +37,6 @@ namespace RadaCode.Tegenaria.Core
             Byte[] info = new UTF8Encoding(true).GetBytes(sitemap.ToString());
             using (FileStream fs = File.Create(path + uri.Authority + ".xml"))
             {
-
                 // Add some information to the file.
                 fs.Write(info, 0, info.Length);
             }

@@ -9,20 +9,30 @@ namespace RadaCode.Tegenaria
 {
     class Program
     {
-        private static IKernel kernel;
+        private static IKernel _kernel;
         
+        static internal void SetupKernel()
+        {
+            _kernel = new StandardKernel(new ServiceModule());
+
+        }
 
         static void Main(string[] args)
         {
-            string url;
-            Console.WriteLine("Enter the link:");
-            url = Console.ReadLine();
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
-            kernel = new StandardKernel(new ServiceModule());
-            var robot = kernel.Get<IRobot>();
-            var siteMap = kernel.Get<IXmlGenerator>();
-            siteMap.GetSiteMapXml(new Uri(url), path, robot.spiderMe(new Uri(url)));
-            
+            SetupKernel();
+
+            Console.Write("Enter the link: ");
+            var url = Console.ReadLine();
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
+
+            var robot = _kernel.Get<IRobot>();
+            var siteMapXmlGenerator = _kernel.Get<IXmlGenerator>();
+
+            siteMapXmlGenerator.GetSiteMapXml(new Uri(url), path, robot.spiderMe(new Uri(url)));
+
+            Console.WriteLine(String.Format("Crawling completed. {0} pages have been indexed.", siteMapXmlGenerator.IndexedPagesCount));
+            Console.ReadKey();
+
         }
 
         
