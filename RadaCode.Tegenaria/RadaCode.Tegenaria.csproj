@@ -35,9 +35,6 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="RadaCode.Tegenaria.Core">
-      <HintPath>..\RadaCode.Tegenaria.Core\bin\Debug\RadaCode.Tegenaria.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +51,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RadaCode.Tegenaria.Core\RadaCode.Tegenaria.Core.csproj">
+      <Project>{5719aff9-b2cd-436a-9391-902d3fb420e3}</Project>
+      <Name>RadaCode.Tegenaria.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

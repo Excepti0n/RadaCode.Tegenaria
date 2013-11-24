@@ -39,8 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultLocStore.cs" />
-    <Compile Include="Interfaces\ILocStore.cs" />
     <Compile Include="Interfaces\IRobot.cs" />
     <Compile Include="Interfaces\IXmlGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

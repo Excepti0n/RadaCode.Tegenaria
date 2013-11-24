@@ -13,7 +13,6 @@ namespace RadaCode.Tegenaria.Ninject
     {
         public override void Load()
         {
-            Bind<ILocStore>().To<DefaultLocStore>().InSingletonScope();
             Bind<IRobot>().To<Robot>().InThreadScope();
             Bind<IXmlGenerator>().To<XmlGenerator>().InThreadScope();
         }

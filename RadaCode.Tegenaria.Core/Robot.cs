@@ -32,17 +32,17 @@ namespace RadaCode.Tegenaria.Core
 
 
             //cambios(getHTML(url), baseUri, urls, 0);
-            var baseUrls = cambios(getHTML(baseUri), baseUri, urls, 0).ToList();
+            var baseUrls = cambios(getHTML(baseUri), baseUri, baseUri, urls, 0).ToList();
             for (int i = 0; i < baseUrls.Count(); i++ )
             {
                 if (baseUri.Equals(new Uri(baseUrls[i]))) continue;
-                cambios(getHTML(new Uri(baseUrls[i])), new Uri(baseUrls[i]), urls, 0);
+                cambios(getHTML(new Uri(baseUrls[i])), baseUri, new Uri(baseUrls[i]), urls, 0);
             }
 
             return urls;
         }
 
-        private ISet<string> cambios(string texto, Uri baseUri, ISet<string> urls, int deepLevel)
+        private ISet<string> cambios(string texto, Uri baseUri, Uri crowlUri, ISet<string> urls, int deepLevel)
         {
             string pattern_hRef = @"(?<=<a[^<>]+href=""?)[^""<>]+(?=""?[^<>]*>)";
 
@@ -58,12 +58,11 @@ namespace RadaCode.Tegenaria.Core
                 else if (Uri.IsWellFormedUriString(match.Value, UriKind.Relative))
                 {
                     href = new Uri(MakeRelative(baseUri.AbsoluteUri, match.Value));
-
                 }
                 else continue;
 
 
-                if (baseUri.DnsSafeHost.Replace("www.", string.Empty)
+                if (crowlUri.DnsSafeHost.Replace("www.", string.Empty)
                     == href.DnsSafeHost.Replace("www.", string.Empty))
                 {
                     _aux = preparaUrl(href.AbsoluteUri);
@@ -76,7 +75,7 @@ namespace RadaCode.Tegenaria.Core
                         {
                             System.Threading.Thread.Sleep(1500);
                             X = false;
-                            cambios(getHTML(new Uri(_aux)), baseUri, urls, ++deepLevel);
+                            cambios(getHTML(new Uri(_aux)), baseUri, crowlUri, urls, ++deepLevel);
                         }
                     }
                 }

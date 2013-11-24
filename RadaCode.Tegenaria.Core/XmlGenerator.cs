@@ -18,10 +18,7 @@ namespace RadaCode.Tegenaria.Core
             IndexedPagesCount = urls.Count;
 
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            //foreach (var url in items)
-            //{
-            //    spiderMe(new Uri(url));
-            //}
+            
             var sitemap = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(ns + "urlset",
@@ -33,8 +30,8 @@ namespace RadaCode.Tegenaria.Core
                       )
                     )
                   );
-
-            Byte[] info = new UTF8Encoding(true).GetBytes(sitemap.ToString());
+            string headerXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+            Byte[] info = new UTF8Encoding(true).GetBytes(headerXml + sitemap.ToString());
             using (FileStream fs = File.Create(path + uri.Authority + ".xml"))
             {
                 // Add some information to the file.
