@@ -29,14 +29,11 @@ namespace RadaCode.Tegenaria.Core
 
             urls.Add(preparaUrl(url.AbsoluteUri));
             urls.Add(preparaUrl(baseUri.AbsoluteUri));
-
-
-            //cambios(getHTML(url), baseUri, urls, 0);
-            var baseUrls = cambios(getHTML(baseUri), baseUri, baseUri, urls, 0).ToList();
-            for (int i = 0; i < baseUrls.Count(); i++ )
+            cambios(getHTML(baseUri), baseUri, baseUri, urls, 0).ToList();
+            for (int i = 0; i < urls.Count(); i++)
             {
-                if (baseUri.Equals(new Uri(baseUrls[i]))) continue;
-                cambios(getHTML(new Uri(baseUrls[i])), baseUri, new Uri(baseUrls[i]), urls, 0);
+                if (baseUri.Equals(new Uri(urls.ElementAt(i)))) continue;
+                cambios(getHTML(new Uri(urls.ElementAt(i))), baseUri, new Uri(urls.ElementAt(i)), urls, 0);
             }
 
             return urls;
@@ -65,7 +62,9 @@ namespace RadaCode.Tegenaria.Core
                 if (crowlUri.DnsSafeHost.Replace("www.", string.Empty)
                     == href.DnsSafeHost.Replace("www.", string.Empty))
                 {
-                    _aux = preparaUrl(href.AbsoluteUri);
+                    string correctUrl = ConfirmUrl(new Uri(href.AbsoluteUri));
+                    if(correctUrl == "") continue;
+                    _aux = preparaUrl(correctUrl);
 
                     if (!urls.Contains(_aux))
                     {
@@ -113,9 +112,29 @@ namespace RadaCode.Tegenaria.Core
             {
                 retorno = string.Empty;
             } 
-
             return retorno;
+        }
 
+        private string ConfirmUrl(Uri url)
+        {
+            string returnUrl = "";
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            try
+            {
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        returnUrl = response.ResponseUri.AbsoluteUri;
+                    }
+                }
+            }
+            catch
+            {
+                returnUrl = "";
+            }
+            return returnUrl;
         }
 
         internal string MakeRelative(string baseUrl, string relativeUrl)
